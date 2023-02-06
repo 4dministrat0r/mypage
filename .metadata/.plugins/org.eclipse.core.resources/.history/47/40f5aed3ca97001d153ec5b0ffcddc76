@@ -1,0 +1,63 @@
+<%@page import="java.util.List"%>
+<%@page import="bbs.*"%>
+<%@page import="user.*" %>
+<%@page import="java.util.ArrayList"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.io.PrintWriter" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; inital-scale=1">
+<link rel="stylesheet" href="css/bootstrap.css">
+<title>JSP 게시판 웹 사이트</title>
+</head>
+<body>
+	<%
+		String userID = null;
+		if (session.getAttribute("userID") != null) {
+			userID = (String) session.getAttribute("userID");
+		}
+		if(userID == null) {
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert('로그인을 하십시오.')");
+			script.println("location.href = 'login.jsp'");
+			script.println("</script>");
+		}
+		
+		UserDAO userDAO = new UserDAO();
+		User mf = userDAO.getmyInfo(userID);
+		
+		if(mf != null) {
+	%>
+	<table border = "1">
+		<tr>
+			<td>아이디</td>
+			<td><%= mf.getUserID() %></td>
+		</tr>
+		<tr>
+			<td>이름</td>
+			<td><%= mf.getUserName()  %></td>
+		</tr>
+		<tr>
+			<td>성별</td>
+			<td><%= mf.getUserGender()  %></td>
+		</tr>
+		<tr>
+			<td>이메일</td>
+			<td><%= mf.getUserEmail()  %></td>
+		</tr>
+		<tr>
+		<td colspan="2"><input type=button value="등록"></td>
+		</tr>
+	</table>
+	<%
+		}
+	%>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+</body>
+</html>
